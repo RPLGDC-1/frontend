@@ -10,4 +10,11 @@ export default defineConfig({
       png: { quality: 75 },
     }),
   ],
+  server: {
+    host: true,
+    port: 3000,
+    watch: {
+      usePolling: true
+    }
+  }
 });
