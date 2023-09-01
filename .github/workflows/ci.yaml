@@ -36,6 +36,8 @@ jobs:
     name: Setup git and deploy to k8s
     runs-on: ubuntu-latest
     needs: build
+    permissions:
+      contents: write
 
     steps:
       - name: Checkout code
@@ -57,10 +59,13 @@ jobs:
           cat deployment.yaml
           sed -i 's|image: 211104/web:v0.0.2|image: 211104/web:v0.0.${{github.run_number}}|' deployment.yaml
           cat deployment.yaml
+          git status
       
       - name: Commit changes
-        run: |
-          git status
-          git add .
-          git commit -m "Apply latest deployment with manifest: v${{github.run_number}}"
-          git push origin feature/github-actions
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Job done by github bot with manifest v${{github.run_number}}
+          branch: feature/github-actions
+          commit_user_name: My GitHub Actions Bot
+          commit_user_email: my-github-actions-bot@example.org
+          commit_author: Author <actions@github.com>
