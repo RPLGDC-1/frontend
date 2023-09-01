@@ -63,4 +63,4 @@ jobs:
           git status
           git add .
           git commit -m "Apply latest deployment with manifest: v${{github.run_number}}"
-          git push origin main
+          git push origin feature/github-actions
