@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
       - name: web
-        image: 211104/web:v0.0.13
+        image: 211104/web:v0.0.14
         ports:
         - containerPort: 3000
