@@ -3,7 +3,7 @@ name: Gitops-ci
 on:
   push:
     branches: 
-      - feature/github-actions
+      - main
 
 jobs:
   build:
@@ -65,7 +65,7 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: Job done by github bot with manifest v${{github.run_number}}
-          branch: feature/github-actions
+          branch: main
           commit_user_name: My GitHub Actions Bot
           commit_user_email: my-github-actions-bot@example.org
           commit_author: Author <actions@github.com>
