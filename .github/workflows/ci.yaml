@@ -2,7 +2,8 @@ name: Gitops-ci
 
 on:
   push:
-    branches: [ master ]
+    branches: 
+      - feature/github-actions
 
 jobs:
   build:
