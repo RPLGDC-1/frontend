@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { login } from '../utils/auth';
+import { login, isLoggedIn } from '../utils/auth';
 
 import loginimg from '../assets/images/loginimg.jpg'
 import { NavLink } from 'react-router-dom'
@@ -12,26 +12,56 @@ import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
 export default function Loginpage() {
     const [showPassword, setShowPassword] = useState(false);
     const [rememberState, setRememberState] = useState(false);
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [formData, setFormData] = useState({
+        email: '',
+        password: '',
+    })
     const [loginLoading, setLoginLoading] = useState(false);
     const [loginError, setLoginError] = useState("");
+    const [loggedIn, setLoggedIn] = useState(false);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if (isLoggedIn()) {
+            setLoggedIn(true);
+            setTimeout(() => {
+                navigate('/');
+            }, 1000);
+        }
+    })
+
     async function loginHandler() {
-        if (email && password) {
+        if (formData.email && formData.password) {
             try {
                 setLoginLoading(true);
-                await login(email, password, rememberState);
+                await login(formData.email, formData.password, rememberState);
                 navigate('/');
             } catch (error) {
                 setLoginLoading(false);
-                setLoginError(error);
+                setLoginError(error.toString());
             }
         } else {
-            setLoginError("Email and password cannot be empty!");
+            setLoginError("Email or password cannot be empty!");
         }
         
     }
+    // console.log(formData)
+    function updateFormData(e) {
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value
+        })
+    }
+
+    if (loggedIn) {
+        return (
+            <div className="relative top-6 bg-white rounded-b-3xl max-md:overflow-hidden w-full h-screen flex flex-col text-center text-2xl">
+                <h1>Already Logged In!</h1> 
+                <h1>You will be redirected to our homepage</h1> 
+            </div>
+        )
+    }
+
     return (
         <div className="relative top-6 bg-white rounded-b-3xl max-md:overflow-hidden w-full h-screen flex flex-col md:flex-row justify-stretch content-stretch">
             <div className="flex flex-col gap-4 w-full text-dbblue py-12 sm:py-24 px-12 sm:px-24">
@@ -47,11 +77,11 @@ export default function Loginpage() {
                     </div>
                     <div className='flex flex-row align-middle w-full border rounded-xl border-dbblue p-2 gap-2' >
                         <MdMailOutline size="32"/>
-                        <input className='w-full text-black outline-none' type="text" placeholder="Masukkan Email Anda" value={email} onChange={(e) => {setEmail(e.target.value)}}></input>
+                        <input className='w-full text-black outline-none' type="text" placeholder="Masukkan Email Anda" name='email' value={formData.email} onChange={updateFormData}></input>
                     </div>
                     <div className='flex flex-row align-middle w-full border rounded-xl border-dbblue p-2 gap-2'>
                         <MdLock size="32"/>
-                        <input className='w-full text-black outline-none' type={showPassword ? "text" : "password"} placeholder="Masukkan Password Anda" value={password} onChange={(e) => {setPassword(e.target.value)}}></input>
+                        <input className='w-full text-black outline-none' type={showPassword ? "text" : "password"} placeholder="Masukkan Password Anda" name='password' value={formData.password} onChange={updateFormData}></input>
                         {showPassword ? 
                           <IoEyeOutline className='cursor-pointer' size="32" onClick={() => setShowPassword(!showPassword)}/>
                         : <IoEyeOffOutline className='cursor-pointer' size="32" onClick={() => setShowPassword(!showPassword)}/>}
@@ -70,7 +100,7 @@ export default function Loginpage() {
                 </div>
 
             </div>
-            <img src={loginimg} className=" md:relative md:-top-6 w-full md:h-[103vh] md:rounded-br-3xl max-md:overflow-hidden md:w-5/12 object-cover object-left"></img>
+            <img src={loginimg} className=" md:relative md:-top-6 w-full md:h-[103vh] mix-blend-multiply md:rounded-br-3xl max-md:overflow-hidden md:w-5/12 object-cover object-left"></img>
             
         </div>
     )
