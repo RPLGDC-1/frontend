@@ -71,7 +71,7 @@ jobs:
           OUTPUT_SHA: ${{ needs.build.outputs.output_sha }}
         run: |
           pwd
-          sed -i "s#image: 211104/web:v-.*#image: 211104/web:v-$OUTPUT_SHA#" deployment.yaml
+          sed -i "s#image: 211104/web:v-__TAG__#image: 211104/web:v-$OUTPUT_SHA#" deployment.yaml
           cat deployment.yaml
       
       - name: Check Working Tree
