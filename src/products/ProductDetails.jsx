@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { MdStarOutline } from "react-icons/md";
 
@@ -8,6 +8,10 @@ export default function ProductDetailspage() {
     const [ product, setProduct ] = useState(null);
     const [ error, setError ] = useState(false);
 
+    if (!quantity || quantity < 1) {
+        setQuantity(1)
+    }
+
     const formatter = Intl.NumberFormat('en', { notation: 'compact' });
     const currencyFormatter = Intl.NumberFormat('id', {
         style: 'currency',
@@ -15,15 +19,12 @@ export default function ProductDetailspage() {
         minimumFractionDigits: 0,
         maximumFractionDigits: 0,
     });
-
-    const desc = "The floral button down shirt for women embody romance and blooming flowers, perfect for summer with a cool feeling and attractive colors.\nWomens Summer Tees Tops, Casual Hawaiian Shirts for some occasions like daily look, going out, hawaiian vacation, holiday, beach etc."
-    
+ 
     async function loadProduct() {
         const response = await fetch(import.meta.env.VITE_API + `/api/products/${productid}`);
         let data;
         if (response.status == 200 && (data = await response.json()).code == 200) {
             setProduct(data.data);
-            console.log(data.data);
         } else {
             setError(true);
         }
@@ -65,8 +66,8 @@ export default function ProductDetailspage() {
                 <p className="whitespace-pre-wrap">{product.description}</p>
                 <div className=" flex flex-col-reverse gap-4 min-[400px]:flex-row">
                     <div className="flex-1 flex flex-col gap-2 max-[400px]:text-center">
-                        <span className="text-2xl font-semibold">{currencyFormatter.format(product.price)}</span>
-                        <button className="text-xl bg-dbblue text-white p-1 rounded-xl" >Buy</button>
+                        <span className="text-2xl font-semibold">{currencyFormatter.format(product.selling_price)}</span>
+                        <Link to={`/transaction?productid=${product.id}&quantity=${quantity}`} className="text-xl text-center bg-dbblue text-white p-1 rounded-xl" >Buy</Link>
                     </div>
                     <div className="flex-1 flex flex-row justify-center min-[400px]:justify-end">
                         <div className="flex flex-col w-32 justify-center items-center gap-2">

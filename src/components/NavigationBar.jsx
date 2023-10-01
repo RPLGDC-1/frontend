@@ -12,7 +12,6 @@ export default function NavigationBar() {
         try {
             const userProfile = await getProfile();
             setUserProfile(userProfile);
-            console.log(userProfile)
         } catch (error) {
             setUserProfile(null);
         }
@@ -42,7 +41,7 @@ export default function NavigationBar() {
                 {userProfile 
                 ? (
                     <>
-                        <NavLink className="navlink w-full flex items-center justify-center bg-black bg-opacity-0 hover:bg-opacity-50 text-center" to="/profile">{userProfile.name}</NavLink>
+                        <NavLink className="navlink w-full flex items-center justify-center bg-black bg-opacity-0 hover:bg-opacity-50 text-center" to="/orders">{userProfile.name}</NavLink>
                         <button className="navlink w-full flex items-center justify-center bg-black bg-opacity-0 hover:bg-opacity-50" onClick={logoutUser}>LOG OUT</button>
                     </>
                 )

@@ -14,6 +14,8 @@ import ProductDetailspage from './products/ProductDetails';
 
 import Transactionpage from './transaction/Transaction';
 
+import Orderspage from './transaction/Orders';
+
 function ScrollToTop() {
   const { pathname } = useLocation();
 
@@ -39,6 +41,7 @@ function App() {
             <Route path=":productid" element={<ProductDetailspage/>} />
           </Route>
           <Route path="transaction" element={<Transactionpage/>} />
+          <Route path="orders" element={<Orderspage/>} />
         </Route>
         <Route path="*" element={<h1>404</h1>} />
       </Routes>

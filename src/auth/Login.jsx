@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import { login, isLoggedIn } from '../utils/auth';
 
 import loginimg from '../assets/images/loginimg.jpg'
-import { NavLink } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 import { MdMailOutline,MdLock } from 'react-icons/md'
 import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
@@ -20,7 +20,7 @@ export default function Loginpage() {
     const [loginError, setLoginError] = useState("");
     const [loggedIn, setLoggedIn] = useState(false);
     const navigate = useNavigate();
-
+    const [searchParams] = useSearchParams();
     useEffect(() => {
         if (isLoggedIn()) {
             setLoggedIn(true);
@@ -35,7 +35,13 @@ export default function Loginpage() {
             try {
                 setLoginLoading(true);
                 await login(formData.email, formData.password, rememberState);
-                navigate('/');
+                console.log(searchParams.get('return'))
+                if (searchParams.get('return') === "true") {
+                    navigate(-1);
+                    console.log("returning")
+                } else {
+                    navigate('/');
+                }
             } catch (error) {
                 setLoginLoading(false);
                 setLoginError(error.toString());
@@ -70,8 +76,8 @@ export default function Loginpage() {
                 <div className='flex flex-col gap-4' >
                     <div className='font-semibold border-b-2' >
                         <div className='relative top-0.5 flex flex-row gap-8 max-sm:justify-center'>
-                            <NavLink to="/register" className="px-4">Register</NavLink>
-                            <NavLink to="/login" className="border-b-2 border-dbblue px-4">Login</NavLink>
+                            <Link to={"/register" + (searchParams.toString() ? "?" + searchParams.toString() : "")} replace={true} className="px-4">Register</Link>
+                            <Link to={"/login" + (searchParams.toString() ? "?" + searchParams.toString() : "")} replace={true} className="border-b-2 border-dbblue px-4">Login</Link>
                         </div>
                         
                     </div>
