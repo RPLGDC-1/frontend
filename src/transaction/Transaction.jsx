@@ -126,23 +126,7 @@ export default function Transactionpage() {
         const response = await fetch(import.meta.env.VITE_API + `/api/checkout`, requestOptions);
         let data;
         if (response.status == 200 && (data = await response.json()).code == 200) {
-            const paymentWindow = window.open(data.data.payment_url, "Payment", "width=500,height=800");
-            console.log(paymentWindow)
-            if (paymentWindow) {
-                const closeWindow = new Promise((resolve, reject) => {
-                    const interval = setInterval(() => {
-                        if (paymentWindow.closed) {
-                            clearInterval(interval);
-                            resolve(true);
-                        }
-                    }, 100);
-                })
-                await closeWindow;
-                setProcessing(false);
-                navigate('/orders');
-            } else {
-                setProcessing(false);
-            }
+            window.location.href = data.data.payment_url;
         } else {
             // setLoadState("error");
         }
