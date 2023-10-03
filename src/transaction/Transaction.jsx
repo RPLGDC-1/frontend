@@ -71,7 +71,7 @@ export default function Transactionpage() {
         let data;
         if (response.status == 200 && (data = await response.json()).code == 200) {
             setOrderData(data.data);
-            console.log(data.data);
+            // console.log(data.data);
         } else {
             setError(data.data.quantity || data.data.product_id || "notfound");
         }
@@ -112,7 +112,7 @@ export default function Transactionpage() {
         requestData.append('phone', formData.phone);
         requestData.append('quantity', searchParams.get('quantity'));
         requestData.append('product_id', searchParams.get('productid'));
-        console.log(requestData)
+        // console.log(requestData)
         const bearerToken = getToken();
         const requestOptions = {
             method: 'POST',

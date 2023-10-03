@@ -57,7 +57,7 @@ export default function Orderspage() {
         "notloggedin": "You are not logged in!",
     }
 
-    console.log(orders)
+    // console.log(orders)
     async function loadOrders() {
         if (!orders || !orders[status] || !orders[status][page]) {
             const bearerToken = getToken();
