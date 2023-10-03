@@ -24,11 +24,11 @@ function TransactionCard({order}) {
                     </div>
                     <div className='flex-1 flex flex-row  items-center'>
                         <span className='flex-1'>Shipping:</span>
-                        <span className='flex-1 text-right'>{currencyFormatter.format(10000)}</span>
+                        <span className='flex-1 text-right'>{currencyFormatter.format(order.shipping_price)}</span>
                     </div>
                     <div className='flex-1 flex flex-row font-semibold  items-center'>
                         <span className='flex-1'>Total:</span>
-                        <span className='flex-1 text-right'>{currencyFormatter.format(order.price+10000)}</span>
+                        <span className='flex-1 text-right'>{currencyFormatter.format(order.price+order.shipping_price)}</span>
                     </div>
                     
                 </div>
@@ -57,7 +57,7 @@ export default function Orderspage() {
         "notloggedin": "You are not logged in!",
     }
 
-    console.log(orders)
+    // console.log(orders)
     async function loadOrders() {
         if (!orders || !orders[status] || !orders[status][page]) {
             const bearerToken = getToken();

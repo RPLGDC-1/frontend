@@ -8,15 +8,15 @@ export default function Footer() {
             <div className="flex flex-col md:flex-row gap-8">
                 <div className="flex flex-col">
                     <h4 className="font-semibold">PAGE</h4>
-                    <Link to="/aboutus">About Us</Link>
-                    <Link to="/reviews">Reviews</Link>
-                    <Link to="/contacts">Contacts</Link>
-                    <Link to="/faqs">FAQs</Link>
+                    <Link>About Us</Link>
+                    <Link>Reviews</Link>
+                    <Link>Contacts</Link>
+                    <Link>FAQs</Link>
                 </div>
                 <div className="flex flex-col">
                     <h4 className="font-semibold">HELP</h4>
-                    <Link to="/privacypolicy">Privacy & Policy</Link>
-                    <Link to="/termsofuse">Reviews</Link>
+                    <Link>Privacy & Policy</Link>
+                    <Link>Reviews</Link>
                 </div>
                 <div className="flex flex-col">
                     <h4 className="font-semibold">Contact</h4>
