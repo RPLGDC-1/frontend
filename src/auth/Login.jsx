@@ -30,15 +30,14 @@ export default function Loginpage() {
         }
     })
 
-    async function loginHandler() {
+    async function loginHandler(e) {
+        e.preventDefault();
         if (formData.email && formData.password) {
             try {
                 setLoginLoading(true);
                 await login(formData.email, formData.password, rememberState);
-                console.log(searchParams.get('return'))
                 if (searchParams.get('return') === "true") {
                     navigate(-1);
-                    console.log("returning")
                 } else {
                     navigate('/');
                 }
@@ -72,7 +71,7 @@ export default function Loginpage() {
         <div className="relative top-6 bg-white rounded-b-3xl max-md:overflow-hidden w-full h-screen flex flex-col md:flex-row justify-stretch content-stretch">
             <div className="flex flex-col gap-4 w-full text-dbblue py-12 sm:py-24 px-12 sm:px-24">
                 <h1 className='text-4xl md:text-5xl font-semibold' >Login To<br/>Dunia Belanja</h1>
-                <p>Thank you for get back to Dunia Belanja. let's access our best recommendation for you</p>
+                <p>Thank you for get back to Dunia Belanja. Let's access our best recommendation for you</p>
                 <div className='flex flex-col gap-4' >
                     <div className='font-semibold border-b-2' >
                         <div className='relative top-0.5 flex flex-row gap-8 max-sm:justify-center'>
@@ -81,32 +80,38 @@ export default function Loginpage() {
                         </div>
                         
                     </div>
-                    <div className='flex flex-row align-middle w-full border rounded-xl border-dbblue p-2 gap-2' >
-                        <MdMailOutline size="32"/>
-                        <input className='w-full text-black outline-none' type="text" placeholder="Masukkan Email Anda" name='email' value={formData.email} onChange={updateFormData}></input>
-                    </div>
-                    <div className='flex flex-row align-middle w-full border rounded-xl border-dbblue p-2 gap-2'>
-                        <MdLock size="32"/>
-                        <input className='w-full text-black outline-none' type={showPassword ? "text" : "password"} placeholder="Masukkan Password Anda" name='password' value={formData.password} onChange={updateFormData}></input>
-                        {showPassword ? 
-                          <IoEyeOutline className='cursor-pointer' size="32" onClick={() => setShowPassword(!showPassword)}/>
-                        : <IoEyeOffOutline className='cursor-pointer' size="32" onClick={() => setShowPassword(!showPassword)}/>}
-                    </div>
-                    <div className='flex flex-col items-center sm:flex-row max-sm:gap-1 justify-evenly'>
-                        <div onClick={() => {setRememberState(!rememberState)}} className='sm:w-full flex flex-row align-middle gap-1 cursor-pointer'>
-                            <input checked={rememberState} type="checkbox" readOnly/><span>Remember me</span>
+                    <form className='flex flex-col gap-4' onSubmit={loginHandler}>
+                        <div className='flex flex-row align-middle w-full border rounded-xl border-dbblue p-2 gap-2' >
+                            <MdMailOutline size="32"/>
+                            <input className='w-full text-black outline-none' type="text" placeholder="Masukkan Email Anda" name='email' value={formData.email} onChange={updateFormData}></input>
                         </div>
-                        <div className='w-full text-center sm:text-right'>
-                            <a>Forget Password?</a>
+                        <div className='flex flex-row align-middle w-full border rounded-xl border-dbblue p-2 gap-2'>
+                            <MdLock size="32"/>
+                            <input className='w-full text-black outline-none' type={showPassword ? "text" : "password"} placeholder="Masukkan Password Anda" name='password' value={formData.password} onChange={updateFormData}></input>
+                            <span onClick={() => setShowPassword(!showPassword)}>
+                            {showPassword ? 
+                            <IoEyeOutline className='cursor-pointer' size="32"/>
+                            : <IoEyeOffOutline className='cursor-pointer' size="32" />}
+                            </span>
                         </div>
+                        <div className='flex flex-col items-center sm:flex-row max-sm:gap-1 justify-evenly'>
+                            <div onClick={() => {setRememberState(!rememberState)}} className='sm:w-full flex flex-row align-middle gap-1 cursor-pointer'>
+                                <input checked={rememberState} type="checkbox" readOnly/><span>Remember me</span>
+                            </div>
                         
-                    </div>
-                    <button className='rounded-md text-white bg-dbblue py-2' onClick={loginHandler} disabled={loginLoading}>{loginLoading ? "LOGGING IN" : "LOGIN"}</button>
-                    {loginError ? <span className='w-full text-red-600 text-center'>{loginError}</span> : null}
+                            <div className='w-full text-center sm:text-right'>
+                                <a>Forget Password?</a>
+                            </div>
+                            
+                        </div>
+                        <input type='submit' className='rounded-md text-white bg-dbblue py-2 cursor-pointer' value={loginLoading ? "LOGGING IN" : "LOGIN"}  disabled={loginLoading}/>
+                        {loginError ? <span className='w-full text-red-600 text-center'>{loginError}</span> : null}
+                    </form>
+                    
                 </div>
 
             </div>
-            <img src={loginimg} className=" md:relative md:-top-6 w-full md:h-[103vh] mix-blend-multiply md:rounded-br-3xl max-md:overflow-hidden md:w-5/12 object-cover object-left"></img>
+            <img src={loginimg} className=" md:relative md:-top-6 w-full md:h-[106vh] mix-blend-multiply md:rounded-br-3xl max-md:overflow-hidden md:w-5/12 object-cover object-left"></img>
             
         </div>
     )
