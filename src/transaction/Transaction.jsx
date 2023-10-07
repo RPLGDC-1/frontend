@@ -94,7 +94,9 @@ export default function Transactionpage() {
         })
     }
 
-    async function payAction() {
+    async function payAction(e) {
+        e.preventDefault();
+        if (processing) return;
         if (!formData.name || !formData.address || !formData.city || !formData.phone || !formData.zip) {
             setError("fieldsempty");
             return;
@@ -122,13 +124,13 @@ export default function Transactionpage() {
             },
             body: requestData
         }
-        
         const response = await fetch(import.meta.env.VITE_API + `/api/checkout`, requestOptions);
         let data;
         if (response.status == 200 && (data = await response.json()).code == 200) {
             window.location.href = data.data.payment_url;
         } else {
-            // setLoadState("error");
+            setProcessing(false);
+            setError(data.data.quantity || data.data.product_id || data.data.errorCode || "error");
         }
     }
 
@@ -154,7 +156,7 @@ export default function Transactionpage() {
                     </div>
                     
                 </div>
-                <div className='flex flex-col gap-4'>
+                <form onSubmit={payAction} className='flex flex-col gap-4'>
                     <h1 className='text-xl font-semibold'>Shipping Address</h1>
                     <div className='w-full px-4 py-1.5 border rounded-xl border-dbblue flex items-center'>
                         <input type="text" className='w-full outline-none' placeholder="Name" value={formData.name} onChange={updateFormData} name='name' />
@@ -176,11 +178,11 @@ export default function Transactionpage() {
                     <div onClick={() => setSaveInfo(!saveInfo)} className='sm:w-full flex flex-row align-middle gap-1 cursor-pointer'>
                         <input checked={saveInfo} type="checkbox" readOnly/><span>Save information for next purchase</span>
                     </div>
-                    <button onClick={payAction} className='rounded-xl bg-dbblue text-white p-1.5' disabled={processing} >{processing ? "Processing..." : "Pay"}</button>
+                    <input type="submit" className='rounded-xl bg-dbblue text-white p-1.5 cursor-pointer' disabled={processing} value={processing ? "Processing..." : "Pay"} />
                     {
-                        error && <span className='w-full text-center text-red-500 text-lg'>{errors[error]}</span>
+                        error && <span className='w-full text-center text-red-500 text-lg'>{errors[error] || error}</span>
                     }
-                </div>
+                </form>
             </div>
             <div className='bg-neutral-200 border-2 border-neutral-300 rounded-xl mx-1 md:w-96 h-fit'>
                 <h1 className='text-2xl font-semibold p-4'>Order Summary</h1>
